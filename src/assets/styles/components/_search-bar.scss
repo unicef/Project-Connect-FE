@@ -1,0 +1,118 @@
+.search-bar {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  padding: 0 ($grid-gutter-width-lg / 2);
+  background-color: $color-deep-blue;
+}
+
+.search-bar-connectivity {
+  background-color: $color-primary;
+
+  @include media-breakpoint-down(sm) {
+    background-color: $color-deep-blue;
+  }
+
+  &::before {
+    position: absolute;
+    top: 5rem;
+    right: ($grid-gutter-width-lg / 2);
+    left: ($grid-gutter-width-lg / 2);
+    display: inline-flex;
+    height: 0.1rem;
+    //background-color: #fff;
+    content: '';
+
+    @include media-breakpoint-down(sm) {
+      display: none;
+    }
+  }
+}
+
+.search-bar__icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 1.5rem;
+  height: 4rem;
+  font-size: 1.5rem;
+}
+
+.search-bar__input {
+  flex: 1 0 auto;
+  height: 4rem;
+  padding: 0 0.5rem;
+  color: $text-color-light;
+  font-weight: bold;
+  font-size: 1.2rem;
+  line-height: 1.5rem;
+  letter-spacing: 0.1rem;
+  text-transform: uppercase;
+  background-color: transparent;
+  border: none;
+  outline: none;
+}
+
+.search-bar-connectivity__input {
+  &::selection {
+    background: #232832;
+
+    @include media-breakpoint-down(sm) {
+      background: #67abff;
+    }
+  }
+  /* stylelint-disable-next-line selector-no-vendor-prefix */
+  &::-webkit-input-placeholder {
+    color: #67abff;
+
+    @include media-breakpoint-down(sm) {
+      color: #757575;
+    }
+  }
+
+  /* stylelint-disable-next-line selector-no-vendor-prefix */
+  &::-moz-placeholder {
+    color: #67abff;
+
+    @include media-breakpoint-down(sm) {
+      color: #757575;
+    }
+  }
+}
+.search-bar__close {
+  position: relative;
+  width: 2rem;
+  height: 2rem;
+  padding: 0;
+  color: $text-color-light;
+  font-size: 2rem;
+  line-height: 1;
+  text-align: center;
+  background-color: transparent;
+  border: none;
+  outline: none;
+  cursor: pointer;
+
+  &::before,
+  &::after {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    display: block;
+    width: 1.8rem;
+    height: 0.2rem;
+    margin-top: -0.1rem;
+    margin-left: -0.9rem;
+    background-color: $text-color-light;
+    border-radius: 0.1rem;
+    content: '';
+  }
+
+  &::before {
+    transform: rotate(45deg);
+  }
+
+  &::after {
+    transform: rotate(135deg);
+  }
+}
