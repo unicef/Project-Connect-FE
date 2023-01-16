@@ -2,7 +2,7 @@ import { createEvent } from 'effector';
 import ReCaptcha from '@matt-block/react-recaptcha-v2';
 import clsx from 'clsx';
 import { useStore } from 'effector-react';
-import React, { FormEvent, useState } from 'react';
+import React, { FormEvent, useState, useEffect } from 'react';
 import styled from 'styled-components';
 import { Button } from '~/ui';
 
@@ -19,6 +19,8 @@ import IconStakeholder from '~/assets/images/stakeholder_pcdc.svg';
 import IconUploadResult from '~/assets/images/upload_result_pcdc.svg';
 import IconDownload from '~/assets/images/download_pcdc.svg';
 import IconInstall from '~/assets/images/install_pcdc.svg';
+import {Accordion, Toggle} from './Accordian'
+
 import {
   $firstname,
   $firstnameError,
@@ -92,6 +94,16 @@ export const DailyCheckApp = () => {
   const [isOpenedDropdown, setOpenedDropdown] = useState(false);
 
   const [isRecaptchaVerified, setIsRecaptchaVerified] = useState(false);
+  const [faqData, setFAQ] = useState<any[]>([]);
+  let api = 'http://localhost/drupalfaq/api/questions';
+  const fetchData = () => {
+    return fetch(api)
+          .then((response) => response.json())
+          .then((data) => setFAQ(data));
+  }
+  useEffect(() => {
+    fetchData();
+  },[]);
 
   return (
     <div ref={onDailyCheckAppRef}>
@@ -306,112 +318,11 @@ export const DailyCheckApp = () => {
                 <h2 className="page-heading__title about-intro__title">
                   Frequently Asked Questions
                 </h2>
+                <p style={{fontSize: 'medium', color: '#0068ea'}}>Have questions? we're here to help.</p>
                 <div className="faq">
-                  <ul>
-                    <li>
-                      <input type="checkbox" defaultChecked />
-                      <i></i>
-                      <h4 className="mapping-list__title">
-                        What is a school ID
-                      </h4>
-                      <p className="mapping-list__text">
-                        A school ID is a unique identifier for your school that
-                        was provided by the government. There are different
-                        formats, but usually looks something like "BR12345" or
-                        "12345678"
-                      </p>
-                    </li>
-                    <li>
-                      <input type="checkbox" defaultChecked />
-                      <i></i>
-                      <h4 className="mapping-list__title">
-                        How do I find my school ID
-                      </h4>
-                      <p className="mapping-list__text">
-                        Your school administrator or IT department will know.
-                        The school ID will be the number that is used in your
-                        national registration system.
-                      </p>
-                    </li>
-                    <li>
-                      <input type="checkbox" defaultChecked />
-                      <i></i>
-                      <h4 className="mapping-list__title">
-                        My school is not part of Project Connect yet. What can I
-                        do?
-                      </h4>
-                      <p className="mapping-list__text">
-                        You can visit our website and fill out the contact form
-                        to indicate to us that you would like to join our
-                        initiative.
-                      </p>
-                    </li>
-                    <li>
-                      <input type="checkbox" defaultChecked />
-                      <i></i>
-                      <h4 className="mapping-list__title">
-                        Can I change my school ID?
-                      </h4>
-                      <p className="mapping-list__text">
-                        Right now it is not possible to change your school ID.
-                        If you’ve made a mistake and need to enter a new ID, you
-                        should uninstall the application and start over.
-                      </p>
-                    </li>
-                    <li>
-                      <input type="checkbox" defaultChecked />
-                      <i></i>
-                      <h4 className="mapping-list__title">
-                        Can I install this application on more than one
-                        computer?
-                      </h4>
-                      <p className="mapping-list__text">
-                        Yes you can. In fact, we encourage it. If multiple
-                        machines report data to the platform, the measurement
-                        will be more reliable.
-                      </p>
-                    </li>
-                    <li>
-                      <input type="checkbox" defaultChecked />
-                      <i></i>
-                      <h4 className="mapping-list__title">
-                        What can I do if I am unhappy with the speed or
-                        reliability of my internet connection?
-                      </h4>
-                      <p className="mapping-list__text">
-                        You can visit our site and fill out the form to file a
-                        report. We can then work with our suppliers to ensure
-                        they deliver the quality of service they promised.
-                      </p>
-                    </li>
-                    <li>
-                      <input type="checkbox" defaultChecked />
-                      <i></i>
-                      <h4 className="mapping-list__title">
-                        Which kind of data will be transmitted to Giga?
-                      </h4>
-                      <p className="mapping-list__text">
-                        The application will transmit upload- and download speed
-                        as well as latency twice daily. In addition, non
-                        personally identifiable information (PID) will be
-                        shared, including IP address, school ID, App version,
-                        Operating System et al.
-                      </p>
-                    </li>
-                    <li>
-                      <input type="checkbox" defaultChecked />
-                      <i></i>
-                      <h4 className="mapping-list__title">
-                        Will Giga be able to access any other information on my
-                        computer?
-                      </h4>
-                      <p className="mapping-list__text">
-                        No, the application does not have access to any data
-                        stored on your computer other than the data it collects
-                        itself.
-                      </p>
-                    </li>
-                  </ul>
+                <Accordion>                    
+                  {faqData.map((data, index)=><Toggle key={index} data={data}>{data.answer}</Toggle>)}
+                </Accordion>               
                 </div>
               </div>
             </div>
