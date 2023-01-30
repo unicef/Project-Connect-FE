@@ -55,3 +55,9 @@
   background-size: 1em 1em;
   content: '';
   }
+
+  ul.pagination {
+    --bs-pagination-padding-x: 2rem !important;
+    --bs-pagination-padding-y: 1.5rem !important;
+  }
+  

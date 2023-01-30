@@ -78,7 +78,6 @@ export const DailyCheckApp = () => {
   const school_idError = useStore($school_idError);
   const emailError = useStore($emailError);
   const messageError = useStore($messageError);
-
   const isDailyCheckAppSendButtonDisabled = useStore(
     $isDailyCheckAppSendButtonDisabled
   );
@@ -97,27 +96,26 @@ export const DailyCheckApp = () => {
   const [isRecaptchaVerified, setIsRecaptchaVerified] = useState(false);
 
   const [faqData, setFAQ] = useState<any[]>([]);
-
-  const fetchData = () => {
-  let api = `http://localhost/drupalfaq/api/questions/0/last/5`;
+  let [totalPage, setPages] = useState<any>();
+  const fetchData = (firstpage = 0, count = 5) => {
+  let api = `http://localhost/drupalfaq/api/questions/${firstpage}/last/${count}`;
     return fetch(api)
           .then((response) => response.json())
-          .then((data) => {setFAQ(data)});
-  }
-    
+          .then((data) => {
+            setPages(totalPage = data[0].totalCount < pageCount ? 1 : Math.ceil(data[0].totalCount / pageCount));
+            setFAQ(data[1])
+          });
+  }    
+  
   useEffect(() => {
-    fetchData();
+    // Set first page default value
+    fetchData(0, pageCount);
   },[]);
 
   const getPageData = async(data:any) =>{
-    //if not data then start 1 and end 5 add it here
     let pageNo = data && data.selected ? data.selected : 0 ;
     let startPageNo = pageCount * pageNo;
-    // let lastPageNo = pageCount * (pageNo + 1);
-    let api = `http://localhost/drupalfaq/api/questions/${startPageNo}/last/${pageCount}`;
-    return fetch(api)
-          .then((response) => response.json())
-          .then((data) => {setFAQ(data)}); 
+    fetchData(startPageNo, pageCount);
   }
   return (
     <div ref={onDailyCheckAppRef}>
@@ -337,7 +335,7 @@ export const DailyCheckApp = () => {
                 <Accordion>                    
                   {faqData.map((data, index)=><Toggle key={index} data={data}>{data.answer}</Toggle>) }
                 </Accordion> 
-                                
+
                 <ReactPaginate 
                  containerClassName={'pagination h1 justify-content-center'} 
                  pageClassName={'page-item'}
@@ -349,7 +347,7 @@ export const DailyCheckApp = () => {
                  breakClassName={'page-item'}
                  breakLinkClassName={'page-link'}
                  activeClassName={'active'}
-                 pageCount={5}
+                 pageCount={totalPage}
                  onPageChange={getPageData}
                 />          
                 </div>
