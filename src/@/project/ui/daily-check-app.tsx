@@ -19,7 +19,8 @@ import IconStakeholder from '~/assets/images/stakeholder_pcdc.svg';
 import IconUploadResult from '~/assets/images/upload_result_pcdc.svg';
 import IconDownload from '~/assets/images/download_pcdc.svg';
 import IconInstall from '~/assets/images/install_pcdc.svg';
-import {Accordion, Toggle} from './Accordian'
+import {Accordion, Toggle} from './Accordian';
+import ReactPaginate from 'react-paginate';
 
 import {
   $firstname,
@@ -70,8 +71,8 @@ export const DailyCheckApp = () => {
   const lastname = useStore($lastname);
   const school_id = useStore($school_id);
   const email = useStore($email);
+  const pageCount = 5;
   const message = useStore($message);
-
   const firstnameError = useStore($firstnameError);
   const lastnameError = useStore($lastnameError);
   const school_idError = useStore($school_idError);
@@ -94,17 +95,30 @@ export const DailyCheckApp = () => {
   const [isOpenedDropdown, setOpenedDropdown] = useState(false);
 
   const [isRecaptchaVerified, setIsRecaptchaVerified] = useState(false);
+
   const [faqData, setFAQ] = useState<any[]>([]);
-  let api = 'http://localhost/drupalfaq/api/questions';
+
   const fetchData = () => {
+  let api = `http://localhost/drupalfaq/api/questions/0/last/5`;
     return fetch(api)
           .then((response) => response.json())
-          .then((data) => setFAQ(data));
+          .then((data) => {setFAQ(data)});
   }
+    
   useEffect(() => {
     fetchData();
   },[]);
 
+  const getPageData = async(data:any) =>{
+    //if not data then start 1 and end 5 add it here
+    let pageNo = data && data.selected ? data.selected : 0 ;
+    let startPageNo = pageCount * pageNo;
+    // let lastPageNo = pageCount * (pageNo + 1);
+    let api = `http://localhost/drupalfaq/api/questions/${startPageNo}/last/${pageCount}`;
+    return fetch(api)
+          .then((response) => response.json())
+          .then((data) => {setFAQ(data)}); 
+  }
   return (
     <div ref={onDailyCheckAppRef}>
       <section className="section mapping" id="introduction">
@@ -318,11 +332,26 @@ export const DailyCheckApp = () => {
                 <h2 className="page-heading__title about-intro__title">
                   Frequently Asked Questions
                 </h2>
-                <p style={{fontSize: 'medium', color: '#0068ea'}}>Have questions? we're here to help.</p>
+                <p style={{fontSize: 'medium', color: '#0068ea', marginTop: '1rem'}}>Have questions? we're here to help.</p>
                 <div className="faq">
                 <Accordion>                    
-                  {faqData.map((data, index)=><Toggle key={index} data={data}>{data.answer}</Toggle>)}
-                </Accordion>               
+                  {faqData.map((data, index)=><Toggle key={index} data={data}>{data.answer}</Toggle>) }
+                </Accordion> 
+                                
+                <ReactPaginate 
+                 containerClassName={'pagination h1 justify-content-center'} 
+                 pageClassName={'page-item'}
+                 pageLinkClassName={'page-link'}
+                 previousClassName={'page-item'}
+                 previousLinkClassName={'page-link'}
+                 nextClassName={'page-item'}
+                 nextLinkClassName={'page-link'}
+                 breakClassName={'page-item'}
+                 breakLinkClassName={'page-link'}
+                 activeClassName={'active'}
+                 pageCount={5}
+                 onPageChange={getPageData}
+                />          
                 </div>
               </div>
             </div>

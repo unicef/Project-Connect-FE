@@ -17,7 +17,7 @@ export const Toggle = (props: any) => (
       { props.data.question }
     </div>
     { 
-      props.active ? (
+      props && props.active ? (
         <div className="toggable_content">
           { props.children }
         </div>
