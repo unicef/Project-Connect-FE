@@ -98,7 +98,7 @@ export const DailyCheckApp = () => {
   const [faqData, setFAQ] = useState<any[]>([]);
   let [totalPage, setPages] = useState<any>();
   const fetchData = (firstpage = 0, count = 5) => {
-  let api = `http://localhost/drupalfaq/api/questions/${firstpage}/last/${count}`;
+  let api = `http://localhost/drupalfaq/api/questions/${firstpage}/pageCount/${count}`;
     return fetch(api)
           .then((response) => response.json())
           .then((data) => {
