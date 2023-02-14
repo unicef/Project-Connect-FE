@@ -97,9 +97,13 @@ export const DailyCheckApp = () => {
 
   const [faqData, setFAQ] = useState<any[]>([]);
   let [totalPage, setPages] = useState<any>();
-  const fetchData = (firstpage = 0, count = 5) => {
-  let api = `http://localhost/drupalfaq/api/questions/${firstpage}/pageCount/${count}`;
-    return fetch(api)
+  const fetchData = (index = 0, pageCount = 5) => {
+  let api = `https://dev-pcdc-cms.pantheonsite.io/api/questions/${index}/pageCount/${pageCount}`;
+    return fetch(api,{    
+      headers: {
+        'Content-Type': 'application/json'
+      }
+    })
           .then((response) => response.json())
           .then((data) => {
             setPages(totalPage = data[0].totalCount < pageCount ? 1 : Math.ceil(data[0].totalCount / pageCount));
