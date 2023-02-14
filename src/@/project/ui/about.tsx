@@ -70,8 +70,8 @@ const AboutContent = () => {
                 UNICEF is mapping the location and real-time Internet connection
                 of every school in the world. This map, hosted on an open data
                 platform, is helping governments and partners eliminate the
-                digital divide globally. To date, over 900,000 schools in more
-                than 35 countries have been mapped, and the number continues to
+                digital divide globally. To date, over 2.1M schools in more
+                than 138 countries have been mapped, and the number continues to
                 grow at an accelerated pace.
               </h4>
             </div>
