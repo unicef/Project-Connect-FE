@@ -31,7 +31,9 @@ export const updateCountryFx = createEffect(
       map.getLayer('schools') ? 'schools' : ''
     );
 
-    map.on('click', 'selectedCountry', clickSchool);
+    //We make this change to make sure schools outside the country boundary clickable
+    // map.on('click', 'selectedCountry', clickSchool);
+    map.on('click', clickSchool);
 
     if (map.getLayer('countries')) {
       map.removeLayer('countries');

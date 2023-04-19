@@ -54,7 +54,7 @@ export const WorldView = () => {
                 {humanFormat(schools_with_connectivity)}
               </p>
               <h3 className="info-list__title">
-                schools' connectivity information mapped accross{' '}
+                schools' connectivity information mapped across{' '}
                 {humanFormat(total_country_with_connectivity)} countries
               </h3>
             </li>
